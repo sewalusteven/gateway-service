@@ -27,7 +27,7 @@ class UpdateServiceRequest extends FormRequest
             //
             "name" => 'required',
             "devPort" => 'required|numeric',
-            "prodPort" => 'required|numeric',
+            "prodPort" => 'required|numeric'
         ];
     }
 }
