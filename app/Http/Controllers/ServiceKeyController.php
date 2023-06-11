@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Payloads\ServiceKeyBody;
 use App\Http\Requests\StoreServiceKeyRequest;
 use App\Http\Requests\UpdateServiceKeyRequest;
 use App\Models\ServiceKey;
@@ -18,25 +19,16 @@ class ServiceKeyController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreServiceKeyRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreServiceKeyRequest $request)
+    public static function generateKey(ServiceKeyBody $keyBody): void
     {
         //
+        $serviceKey  = ServiceKey::create([
+            "user_id" => $keyBody->getUserId(),
+            "service_id" => $keyBody->getServiceId(),
+            "key" => $keyBody->getKey()
+        ]);
+
     }
 
     /**

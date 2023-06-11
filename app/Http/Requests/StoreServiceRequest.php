@@ -13,7 +13,7 @@ class StoreServiceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,9 @@ class StoreServiceRequest extends FormRequest
     {
         return [
             //
+            "name" => 'required',
+            "devPort" => 'required|numeric',
+            "prodPort" => 'required|numeric',
         ];
     }
 }

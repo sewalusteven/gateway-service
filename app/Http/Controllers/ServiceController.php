@@ -4,83 +4,93 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use App\Http\Resources\ServiceResource;
 use App\Models\Service;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         //
+        return ServiceResource::collection(Service::all()->paginate(10));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreServiceRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreServiceRequest $request
+     * @return ServiceResource
      */
-    public function store(StoreServiceRequest $request)
+    public function store(StoreServiceRequest $request): ServiceResource
     {
         //
+        $service = Service::create([
+            "name" => $request->input('name'),
+            "description" => $request->input('description'),
+            "enabled" => $request->input('enabled'),
+            "dev_url" => $request->input('devUrl'),
+            "prod_url" => $request->input('prodUrl'),
+            "dev_port" => $request->input('devPort'),
+            "prod_port" => $request->input('prodPort')
+        ]);
+
+        return new ServiceResource($service);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
+     * @param Service $service
+     * @return ServiceResource
      */
-    public function show(Service $service)
+    public function show(Service $service): ServiceResource
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Service $service)
-    {
-        //
+        return new ServiceResource($service);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateServiceRequest  $request
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
+     * @param UpdateServiceRequest $request
+     * @param Service $service
+     * @return ServiceResource
      */
-    public function update(UpdateServiceRequest $request, Service $service)
+    public function update(UpdateServiceRequest $request, Service $service): ServiceResource
     {
         //
+        $service->update(
+            [
+                "name" => $request->input('name'),
+                "description" => $request->input('description'),
+                "enabled" => $request->input('enabled'),
+                "dev_url" => $request->input('devUrl'),
+                "prod_url" => $request->input('prodUrl'),
+                "dev_port" => $request->input('devPort'),
+                "prod_port" => $request->input('prodPort'),
+            ]
+        );
+        return new ServiceResource($service);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
+     * @param Service $service
+     * @return Response
      */
-    public function destroy(Service $service)
+    public function destroy(Service $service): Response
     {
         //
+        $service->delete();
+        return response("service deleted", 201);
     }
 }
