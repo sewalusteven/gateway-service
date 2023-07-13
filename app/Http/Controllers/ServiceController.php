@@ -19,7 +19,7 @@ class ServiceController extends Controller
     public function index(): AnonymousResourceCollection
     {
         //
-        return ServiceResource::collection(Service::all()->paginate(10));
+        return ServiceResource::collection(Service::paginate(10));
     }
 
 
