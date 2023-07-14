@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SessionTokenCreated;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,7 +31,10 @@ class UserController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
+        $token = $user->createToken($request->email)->plainTextToken;
 
-        return response(['token'=>$user->createToken($request->email)->plainTextToken, 'user' => new UserResource($user)], 200);
+        SessionTokenCreated::dispatch($token);
+
+        return response(['token'=>$token, 'user' => new UserResource($user)], 200);
     }
 }

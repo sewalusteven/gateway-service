@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\ServiceKeyGenerated;
+use App\Events\SessionTokenCreated;
 use App\Listeners\GenerateServiceKeyOnService;
+use App\Listeners\UpdateInventoryServiceWithToken;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,7 +24,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         ServiceKeyGenerated::class => [
             GenerateServiceKeyOnService::class
-        ]
+        ],
+        SessionTokenCreated::class => [
+            UpdateInventoryServiceWithToken::class
+        ],
     ];
 
     /**
